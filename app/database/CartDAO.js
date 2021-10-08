@@ -45,7 +45,7 @@ class CartDAO {
             host: this.host,
             user: this.username,
             password: this.password,
-            database: 'suppsupply'
+            database: 'f21o3d52t6wthb4u'
         });
     }
     getAllCarts(callback) {
@@ -172,6 +172,22 @@ class CartDAO {
         });
     }
     update(cart, callback) {
+        // Get a pooled connection to the database
+        this.pool.getConnection(function (err, connection) {
+            return __awaiter(this, void 0, void 0, function* () {
+                // Throw error if exists
+                if (err)
+                    throw err;
+                connection.query = util.promisify(connection.query);
+                let result = yield connection.query(`UPDATE cart SET userID = '${cart.userID}' WHERE ID = '${cart.ID}'`);
+                if (result.affectedRows == 1) {
+                    callback(200);
+                }
+                else {
+                    callback(500);
+                }
+            });
+        });
     }
     delete(cartID, callback) {
         // Get a pooled connection to the database

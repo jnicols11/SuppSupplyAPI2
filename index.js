@@ -13,10 +13,10 @@ const app = express()
 const port = 3000
 
 // Database configuration
-const dbHost = "localhost";
+const dbHost = "y5svr1t2r5xudqeq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
 const dbPort = 3306;
-const dbUsername = "root";
-const dbPassword = "";
+const dbUsername = "ypeynhj4r0m4pr8e";
+const dbPassword = "ii6hug2xqcgmxk1b";
 
 app.use(bodyParser.json())
 app.use(express.static('app'));

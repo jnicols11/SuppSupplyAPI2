@@ -21,7 +21,7 @@ export class ProductDAO {
             host: this.host,
             user: this.username,
             password: this.password,
-            database: 'suppsupply'
+            database: 'f21o3d52t6wthb4u'
         });
     }
 
