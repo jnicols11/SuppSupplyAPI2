@@ -1,0 +1,1 @@
+web: nodemon -e js,ts --watch ./index.js --watch app --ignore 'lib/*' --exec 'npm run build && node ./index.js'
