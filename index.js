@@ -1,3 +1,5 @@
+const cors = require('cors');
+
 // Application Dependencies
 const bodyParser = require('body-parser');
 const { UserDAO } = require('./app/database/UserDAO');
@@ -9,26 +11,23 @@ const express = require('express');
 const { User } = require('./app/models/User');
 const { Product } = require('./app/models/Product');
 
+
 const app = express()
 const port = 3000
 
+// CORS Middleware
+app.use(cors())
+
 // Database configuration
-const dbHost = "y5svr1t2r5xudqeq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com";
+const dbHost = "localhost";
 const dbPort = 3306;
-const dbUsername = "ypeynhj4r0m4pr8e";
-const dbPassword = "ii6hug2xqcgmxk1b";
+const dbUsername = "root";
+const dbPassword = "";
 
 app.use(bodyParser.json())
 app.use(express.static('app'));
 
-// CORS Middleware
-app.use(function (req, res, next) {
-    // Enabling CORS
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.header("Access-Control-Allow-Headers", "Origin");
-    next();
-})
+
 
 // Register Routes
     // user Routes
@@ -58,16 +57,20 @@ app.use(function (req, res, next) {
         console.log('In POST ./user/register Route');
 
         // Establish variables from request
-        let firstName = req.query.firstName;
-        let lastName = req.query.lastName;
-        let email = req.query.email;
-        let password = req.query.password;
+        let firstName = req.body.firstName;
+        let lastName = req.body.lastName;
+        let email = req.body.email;
+        let password = req.body.password;
 
         let user = new User(-1, firstName, lastName, email, password);
 
         let dao = new UserDAO(dbHost, dbUsername, dbPassword);
         dao.register(user, function (response) {
-            res.json(response);
+            if (response == 200) {
+                res.status(200).json({ message: 'Register Success'});
+            } else {
+                res.status(500).json({ message: 'Registration failed'});
+            }
         })
     });
 
@@ -75,12 +78,17 @@ app.use(function (req, res, next) {
         console.log('In POST ./user/login Route');
 
         // Establish variables from request
-        let email = req.query.email;
-        let password = req.query.password;
+        let email = req.body.email;
+        let password = req.body.password;
 
         let dao = new UserDAO(dbHost, dbUsername, dbPassword);
         dao.login(email, password, function (response) {
-            res.json(response);
+            if (response == 401) {
+                res.status(401).json({ error: 'invalid credentials' });
+            } else {
+                res.json(response);
+            }
+            
         })
     });
 
@@ -273,28 +281,32 @@ app.use(function (req, res, next) {
         console.log('In POST ./cart/add Route');
 
         // Establish variables from request
-        let cartID = req.query.cartID;
-        let productID = req.query.productID;
+        let cartID = req.body.cartID;
+        let productID = req.body.productID;
+        let dao = new CartDAO(dbHost, dbUsername, dbPassword);
 
         let productDAO = new ProductDAO(dbHost, dbUsername, dbPassword);
         productDAO.getProductByID(productID, function (product) {
-            let dao = new CartDAO(dbHost, dbUsername, dbPassword);
             dao.add(product, cartID, function (response) {
                 res.json(response);
             })
         });
     });
 
-    app.post('/cart/remove', function (req, res) {
+    app.post('/cart/remove/', function (req, res) {
         console.log('In POST ./cart/remove Route');
 
         // Establish variables from request
-        let cartID = req.query.cartID;
-        let productID = req.query.productID;
+        let cartID = req.body.cartID;
+        let productID = req.body.productID;
 
         let dao = new CartDAO(dbHost, dbUsername, dbPassword);
         dao.remove(productID, cartID, function (response) {
-            res.json(response);
+            if (response == 200) {
+                res.status(200).json({ message: 'item removed' })
+            } else {
+                res.status(500).json({ message: 'failed' })
+            }
         })
     });
 

@@ -22,7 +22,7 @@ export class CartDAO {
             host: this.host,
             user: this.username,
             password: this.password,
-            database: 'f21o3d52t6wthb4u'
+            database: 'suppsupply'
         });
     }
 
@@ -103,7 +103,7 @@ export class CartDAO {
         });
     }
 
-    public create(userID: Number, callback: any) {
+    public create(userID: number, callback: any) {
         // Get a pooled connection to the database
         this.pool.getConnection(async function (err: any, connection: any) {
             // Throw error if exists
@@ -120,7 +120,7 @@ export class CartDAO {
         });
     }
 
-    public add(product: Product, cartID: Number, callback: any) {
+    public add(product: Product, cartID: number, callback: any) {
         // Get a pooled connection to the database
         this.pool.getConnection(async function (err: any, connection: any) {
             // Throw error if exists
@@ -137,14 +137,14 @@ export class CartDAO {
         });
     }
 
-    public remove(productID: Number, cartID: Number, callback: any) {
+    public remove(productID: number, cartID: number, callback: any) {
         // Get a pooled connection to the database
         this.pool.getConnection(async function (err: any, connection: any) {
             // Throw error if exists
             if (err) throw err
 
             connection.query = util.promisify(connection.query);
-            let result = await connection.query(`DELETE FROM cartproduct WHERE productID = '${productID}' AND cartID = '${cartID}' LIMIT 1`);
+            let result = await connection.query(`DELETE FROM cartproduct WHERE ID = '${productID}' AND cartID = '${cartID}' LIMIT 1`);
 
             if (result.affectedRows == 1) {
                 callback (200);
