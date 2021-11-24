@@ -21,7 +21,7 @@ export class UserDAO {
             host: this.host,
             user: this.username,
             password: this.password,
-            database: 'f21o3d52t6wthb4u'
+            database: 'suppsupply'
         });
     }
 
@@ -96,10 +96,9 @@ export class UserDAO {
             connection.query = util.promisify(connection.query);
             let result = await connection.query('SELECT * FROM user WHERE Email = ? AND Password = ?', [email, password]);
             if (result[0]) {
-                callback (200);
-            } else {
-                callback (401);
+                callback (result[0]);
             }
+            callback(401);
         });
     }
 

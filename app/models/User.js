@@ -1,13 +1,14 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.User = void 0;
-class User {
-    constructor(ID, firstName, lastName, email, password) {
+var User = /** @class */ (function () {
+    function User(ID, firstName, lastName, email, password) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
-}
+    return User;
+}());
 exports.User = User;
