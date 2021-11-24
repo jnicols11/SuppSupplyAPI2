@@ -119,7 +119,7 @@ var UserDAO = /** @class */ (function () {
                         case 1:
                             result = _a.sent();
                             if (result.affectedRows == 1) {
-                                callback(200);
+                                callback(result.insertId);
                             }
                             else {
                                 callback(500);

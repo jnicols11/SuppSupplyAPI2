@@ -80,7 +80,7 @@ export class UserDAO {
             let result = await connection.query(`INSERT INTO user (FirstName, LastName, Email, Password) VALUES ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.password}')`);
 
             if (result.affectedRows == 1) {
-                callback (200);
+                callback (result.insertId);
             } else {
                 callback (500);
             }
