@@ -66,8 +66,8 @@ app.use(express.static('app'));
 
         let dao = new UserDAO(dbHost, dbUsername, dbPassword);
         dao.register(user, function (response) {
-            if (response == 200) {
-                res.status(200).json({ message: 'Register Success'});
+            if (response != 500) {
+                res.status(200).json({ ID: response });
             } else {
                 res.status(500).json({ message: 'Registration failed'});
             }
